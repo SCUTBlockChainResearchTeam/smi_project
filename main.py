@@ -1,6 +1,6 @@
 import dataset_module
 import load_data
-import pathnet
+import net_modules
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -13,7 +13,7 @@ learning_rate = 0.1
 batch_size = 64
 epochs = 1 # 将整体数据迭代多少代
 
-
+# TODO: 改造主程序  封装pathnet训练函数和 overlapnet训练函数
 if __name__ == '__main__':
     # 先制作 DataLoader
     trainset = dataset_module.PN_dataset('train_pathnet',
@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
 
     # 定义 网络
-    net = pathnet.PathNet()
+    net = net_modules.PathNet()
 
     # 定义学习相关的一系列参数 , 优化器 等
     loss = nn.MSELoss() # 损失函数 (1/n)*|x-y|^2
