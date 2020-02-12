@@ -8,10 +8,22 @@ from torch.utils.data import Dataset,DataLoader
 from torchvision import transforms
 import torch.optim as optim
 
+"""
+@Constant:
+learning_rate = 0.1
+batch_size = 64
+epoch = 5 # 测试阶段 真正训练需要百代以上
+model_save_path = ''
+"""
+const_
+def train_path_net():
+
+
 # 一些常量
 learning_rate = 0.1
 batch_size = 64
 epochs = 1 # 将整体数据迭代多少代
+
 
 # TODO: 改造主程序  封装pathnet训练函数和 overlapnet训练函数
 if __name__ == '__main__':
