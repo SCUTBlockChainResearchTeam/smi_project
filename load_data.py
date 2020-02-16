@@ -54,7 +54,7 @@ def unpack_drawings(filename):
 '''
 
 
-def init_training_pathnet(path_name,num,size = 224, mode='train_pathnet'):
+def init_training_pathnet(path_name,num=1,size=224, mode='train_pathnet'):
     with open(os.path.join(mode,'data.csv'), 'w') as f:
         writer = csv.DictWriter(f,['image_name','pixel_pos','located_path'])
         writer.writeheader()
@@ -148,6 +148,6 @@ def init_training_overlapnet(pathname,num=1,pic_size = 224,  mode='train_overlap
 
 if __name__ == '__main__':
     print('TEST')
-    init_training_overlapnet('./imagesource',5)
+    init_training_pathnet('./imagesource',mode='valid_pathnet')
 
 

@@ -1,13 +1,3 @@
-import dataset_module
-import load_data
-import net_modules
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset,DataLoader
-from torchvision import transforms
-import torch.optim as optim
-
 """
 @Constant:
 learning_rate = 0.1
@@ -15,8 +5,7 @@ batch_size = 64
 epoch = 5 # 测试阶段 真正训练需要百代以上
 model_save_path = ''
 """
-const_
-def train_path_net():
+def train_pathnet(cpu = True,):
 
 
 # 一些常量

@@ -118,15 +118,8 @@ import torch
 # plt.show()
 
 if __name__ == '__main__':
-    tu = [((1,5,10),(2,9,7)),((100,41,10),(12,12,14))]
-    bbox = np.hstack(tu)
-    print(bbox)
-    print(bbox.max(axis=1))
-    for file in os.listdir('C:\\Users\\10737\\Desktop\\ps'):
-        # print(root)
-        # print(dir)
-        print(file)
-    a = np.zeros((3,5,2))
-    c = tsfm.ToTensor(a)
-    print(c)
+    a = torch.from_numpy(np.array([[1,2,3],[4,5,6]]))
+    c = a > 3
+    c.type(torch.threshold())
+    print(type(c),c)
 
