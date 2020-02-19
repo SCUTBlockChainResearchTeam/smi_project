@@ -118,7 +118,7 @@ import torch
 # plt.show()
 
 if __name__ == '__main__':
-    a = torch.from_numpy(np.array([[1,2,3],[4,5,6]]))
+    a = torch.from_numpy(np.array([[[1,2,3],[4,5,6]]]))
     c = a > 3
     c.type(torch.threshold())
     print(type(c),c)
