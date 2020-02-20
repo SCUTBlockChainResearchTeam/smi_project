@@ -199,6 +199,7 @@ def func_train_overlap(model ,dataloaders, criterion, optimizer, scheduler, mode
                     ouputs = model(inputs)
                     losses = criterion(ouputs,labels)
                     # 先把output转成numpy然后进行操作 这里output应该是 batch_size * 224 *224
+                    # overlap net d额正确率计算遵循IOU计算法则 即output 和 label 有值区域的交集/并集
                     ouputs = ouputs.cpu().numpy()
                     labels = labels.cpu().numpy()
                     for i in range(inputs.size(0)):
@@ -209,8 +210,6 @@ def func_train_overlap(model ,dataloaders, criterion, optimizer, scheduler, mode
                         optimizer.step()
                 # 计算这个batch的loss加到epoch的loss上
                 epoch_loss += losses.item() * inputs.size(0) # 这里为什么这样写 因为 一个batch 如果有n割数据 这里的loss其实算的是平均
-                # overlap net d额正确率计算遵循IOU计算法则 即output 和 label 有值区域的交集/并集
-                epoch_acc += (1 - losses.item()/(224*224)) * inputs.size(0)
             # 到这 这个epoch的训练/验证就结束了 该有的数据都有了
             epoch_acc = epoch_acc/len(dataloaders[phase].dataset)
             epoch_loss = epoch/len(dataloaders[phase].dataset)
