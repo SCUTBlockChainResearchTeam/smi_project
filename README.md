@@ -44,12 +44,34 @@ A general statement of PathNet using a flowchart:
     ![](./pathnet_flowchart.png)
 To get a quick start, just clone and run main.py.
 
-To make contribution, you can make amove in two ways:
-    
-    1.Contribute your data, Here we need sketches in 224*224 and .png form and its vectorical labels.
-        1.1 Concretely,you need to submit a png pic in 224*224, and you need to give us the vectorized path of this 
-            picture, the form is like [[24,57,23],[17,90,100]] which meaans the stroke will pass (24,17) (57,90) (23,100)
-            these 3 coordinates.
-        1.2 If you want to sunmit this kiand of data, please make every piece as a whole csv file.
-    2.Contribute your idea about the cnn structure. you can change the pathnet.py and push it to me!
+# Tips: 如果想要贡献您的数据
+我们十分感激想要做出贡献的热心人士，但考虑到贡献者对图像处理,文件处理等技术的了解程度不一致,我们提供了以下几种方式来帮助您准备能为本项目做贡献的数据.  
+## 1.如果您了解矢量图:
+> 矢量图的基本格式是:  
+```
+[ 
+  [  // First stroke 
+    [x0, x1, x2, x3, ...],
+    [y0, y1, y2, y3, ...]
+  ],
+  [  // Second stroke
+    [x0, x1, x2, x3, ...],
+    [y0, y1, y2, y3, ...]
+  ],
+  ... // Additional strokes
+]
+```
+如果您想直接为我们提供这种最标准的表示形式，我们需要一张灰度图片,还需要您为我们图片中上述轨迹对应的矢量表示。具体的数据组织形式可以使用csv或excel文件。这里以csv文件为例:  
+> 文件由三列组成，表头分别为图片id，图片轨迹X坐标，图片轨迹Y坐标，示例文件可以参考[standard_sample.csv](./train_overlapnet/data.csv).样例图片如下:  
+> ![样例图片](./train_overlapnet/1582183960528033.png)  
 
+
+## 如果您不了解矢量图:
+> 您的图片应该有明显的*区分度*，最理想的情况是除了您的线条区域以外，其他区域像素为0。除了这张灰度照片，您也需要提供简单的轨迹坐标列表，形式同样为csv或excel。大致告诉我们每条线条的轨迹描述。
+
+## 关于图片的一些参数
+***不管您使用哪种方式提交您的贡献，以下参数都必须遵循***
+1. 图片大小：标准的`224\*224`像素大小
+2. 图片格式: `PNG`格式
+3. 轨迹与非轨迹区域灰度差值`不应小于100`
+4. csv文件(或excel)应`严格按照示例`进行编写.

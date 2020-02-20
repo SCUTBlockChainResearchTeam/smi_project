@@ -79,7 +79,7 @@ class PathNet(nn.Module):
 
 class OverlapNet(nn.Module):
     def __init__(self):
-        super(OverlapNet.self).__init__()
+        super(OverlapNet,self).__init__()
         self.start_block = nn.Sequential(
             nn.Conv2d(1, 64, 3, 1, 1),
             nn.BatchNorm2d(64)

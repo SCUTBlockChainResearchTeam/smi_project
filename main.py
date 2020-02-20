@@ -1,3 +1,10 @@
+import torch.optim as optim
+import func_train_and_valid as ftav
+import dataset_module
+from torch.utils.data import DataLoader
+from torchvision import transforms
+import net_modules
+import torch.nn as nn
 """
 @Constant:
 learning_rate = 0.1
@@ -5,49 +12,35 @@ batch_size = 64
 epoch = 5 # 测试阶段 真正训练需要百代以上
 model_save_path = ''
 """
-def train_pathnet(cpu = True,):
 
-
-# 一些常量
-learning_rate = 0.1
-batch_size = 64
-epochs = 1 # 将整体数据迭代多少代
-
-
-# TODO: 改造主程序  封装pathnet训练函数和 overlapnet训练函数
 if __name__ == '__main__':
-    # 先制作 DataLoader
-    trainset = dataset_module.PN_dataset('train_pathnet',
-                                         transform=transforms.ToTensor())
-    train_loader = DataLoader(trainset,batch_size=batch_size,shuffle=True,num_workers=2)
+    '''
+    overlap net 的调用示例
+    '''
+    # 构建数据集
+    trainset = dataset_module.ON_dataset(transform=transforms.ToTensor())
+    validset = dataset_module.ON_dataset(mode='valid_pathnet', transform=transforms.ToTensor())
+    # 做一个加载器 用来按batch给网络喂数据
+    trainloader = DataLoader(trainset, batch_size=ftav.CONST_BATCH_SIZE, shuffle=True, num_workers=4)
+    validloader = DataLoader(validset, batch_size=ftav.CONST_BATCH_SIZE, shuffle=True, num_workers=4)
+    loader_dict = {'train': trainloader, 'valid': validloader}  # 做一个字典  用来切换
 
+    # 初始化网络
+    net = net_modules.OverlapNet()
+    # 初始化 loss计算标准
+    criterion = nn.MSELoss()
+    # 初始化一个Adam优化器 带动量
+    optimizer = optim.Adam(net.parameters(), lr=ftav.CONST_LR)
+    # 初始化一个学习率衰减器
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.05)  # 每5个epoch 调整一下学习率
 
-    # 定义 网络
-    net = net_modules.PathNet()
-
-    # 定义学习相关的一系列参数 , 优化器 等
-    loss = nn.MSELoss() # 损失函数 (1/n)*|x-y|^2
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-    optimizer = optim.Adam(net.parameters(), lr=learning_rate)
-    scheduler = optim.lr_scheduler.StepLR(optimizer,step_size=5, gamma=0.05) # 每5个epoch 调整一下学习率
-
-    for epoch in range(epochs):
-        print('Epoch {}/{}'.format(epoch+1,epochs))
-        print('--'*10)
-        net.train()
-        lossss = 0 # 用来计算loss
-        for batch_id, sample in enumerate(train_loader):
-            input_batch = sample['input']
-            labels = sample['label']
-            outputs = net(input_batch)
-            losses = loss(outputs, labels)
-            losses.backward()
-            optimizer.zero_grad()
-            optimizer.step()
-            lossss += losses.item()
-        print('平均loss = {}'.format(lossss / batch_size))
-        scheduler.step()
-
+    model, val_acc_history, val_losses, train_acc_history, train_losses = ftav.func_train_overlap(model=net,
+                                                                                          dataloaders=loader_dict,
+                                                                                          criterion=criterion,
+                                                                                          optimizer=optimizer,
+                                                                                          scheduler=scheduler,
+                                                                                          model_save_path='test.pth',
+                                                                                          num_epoch=20)
+    print('TEST')
 
 

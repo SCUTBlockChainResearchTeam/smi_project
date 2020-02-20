@@ -76,3 +76,4 @@ class ON_dataset(Dataset):
             label = self.transform(label)
         sample = {'input': input_, 'label': label}
         return sample
+

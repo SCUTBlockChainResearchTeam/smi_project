@@ -138,8 +138,8 @@ def init_training_overlapnet(pathname,num=1,pic_size = 224,  mode='train_overlap
                 # 现在关于这幅图像我们需要的东西都拿到了 构建 存储到csv中的行字典
                 csv_dict = {}
                 csv_dict['image_name'] = img_path
-                csv_dict['X_label'] = list(overlaps_x)
-                csv_dict['Y_label'] = list(overlaps_y)
+                csv_dict['X_label'] = list(overlaps_x.astype(dtype=np.int))
+                csv_dict['Y_label'] = list(overlaps_y.astype(dtype=np.int))
                 writer.writerow(csv_dict)
                 # 将计数变量递增 以便提取到我们想要的图片数量
                 count += 1
@@ -148,6 +148,6 @@ def init_training_overlapnet(pathname,num=1,pic_size = 224,  mode='train_overlap
 
 if __name__ == '__main__':
     print('TEST')
-    init_training_pathnet('./imagesource',mode='valid_pathnet')
+    init_training_overlapnet('./imagesource',mode='train_overlapnet')
 
 
